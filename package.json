@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ConardLi/electron-localStorage.git"
+    "url": "git+https://github.com/kangyiban/electron-localStorage-json.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ConardLi/electron-localStorage/issues"
+    "url": "https://github.com/kangyiban/electron-localStorage-json/issues"
   },
-  "homepage": "https://github.com/ConardLi/electron-localStorage#readme",
+  "homepage": "https://github.com/kangyiban/electron-localStorage-json/#readme",
   "devDependencies": {
     "eslint": "3.19.0",
     "eslint-config-standard": "10.2.1",
