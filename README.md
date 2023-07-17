@@ -1,26 +1,25 @@
-# electron-localStorage
+# electron-localstorage-json
 在eletron主线程也能使用的localStorage
 
 
-electron主进程中是不能获取到浏览器的window对象的，所以我们不能像在渲染进程中一样使用浏览器为我们提供的localstorage对象。
+主要解决electron主进程中获取不到浏览器的window对象的，不能像在渲染进程中一样使用浏览器为我们提供的localstorage对象。
 
-但是主进程中有可能也需要这样的需求，比如我们在本地存储了当前的环境（dev/beta/prod），主进程需要根据不同的开发环境来load不同的url。
 
 于是手动封装了一个可以在主进程中调用的localstorage。
 
 # 1.安装
 
 ```
-npm install electron-localstorage
+npm install electron-localstorage-json
 ```
 # 2.引用：
 ```
-const storage = require('electron-localstorage');
+const storage = require('electron-localstorage-json');
 ```
 
 # 3.使用
 
-## 3.1完美支持所有localStorage的所有api：
+## 3.1完美支持所有类似localStorage的所有api：
 
 存储数据
 ```
