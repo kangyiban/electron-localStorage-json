@@ -1,10 +1,9 @@
 'use strict';
 
-/**
- * 读取本地配置
- */
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+
 /**
  * 判断配置文件是否存在
  */
@@ -15,6 +14,7 @@ function isExit() {
   }
   return success;
 }
+
 /**
  * 初始化config
  */
@@ -34,6 +34,7 @@ function initConfig() {
     return false;
   }
 }
+
 /**
  * 读取文件
  */
@@ -45,6 +46,7 @@ function readConfig() {
     return false;
   }
 }
+
 /**
  * 写入文件
  */
@@ -58,68 +60,68 @@ function writeConfig(value) {
   }
 }
 
-
 const localConfig = {
-  config: null,
-  configUrl: path.join(__dirname, './localConfig.json'),
-  setStoragePath: (path) => {
-    localConfig.configUrl = path;
-  },
-  getStoragePath: () => {
-    return localConfig.configUrl;
-  },
-  getItem: (key) => {
-    const success = isExit();
-    if (success) {
-      const result = localConfig.config[key];
-      return result ? result : '';
-    }
-    return null;
-  },
-  setItem: (key, value) => {
-    let success = isExit();
-    if (success) {
-      const config = Object.assign({}, localConfig.config);
-      config[key] = value;
-      const suc = writeConfig(config);
-      if (suc) {
-        localConfig.config = config;
-        return true;
+    config: null,
+    configUrl: path.join(path.dirname(os.homedir()), 'localConfig.json'),
+    setStoragePath: (filePath) => {
+      let configFilePath = filePath;
+      if(!fs.existsSync(path.dirname(configFilePath))) {
+        fs.mkdirSync(path.dirname(configFilePath), {recursive:true});
       }
-    }
-    return false;
-  },
-  getAll: () => {
-    let success = isExit();
-    if (success) {
-      return localConfig.config;
-    }
-    return null;
-  },
-  removeItem: (key) => {
-    const value = localConfig.getItem(key);
-    if (value) {
-      const config = Object.assign({}, localConfig.config);
-      delete config[key];
-      const suc = writeConfig(config);
-      if (suc) {
-        localConfig.config = config;
-        return true;
+      if (!fs.statSync(configFilePath).isFile()) {
+        configFilePath = path.join(configFilePath, 'localConfig.json');
       }
-    }
-    return false;
-  },
-  clear: () => {
-    let success = isExit();
-    if (success) {
-      const suc = writeConfig({});
-      if (suc) {
-        localConfig.config = {};
-        return true;
+      localConfig.configUrl = configFilePath;
+    },
+    getStoragePath: () => {
+      return localConfig.configUrl;
+    },
+    getItem: (key) => {
+      if (isExit()) {
+        const result = localConfig.config[key];
+        return result || null;
       }
+      return null;
+    },
+    setItem: (key, value) => {
+      if (isExit()) {
+        const config = Object.assign({}, localConfig.config);
+        config[key] = value;
+        const suc = writeConfig(config);
+        if (suc) {
+            localConfig.config = config;
+            return true;
+        }
+      }
+      return false;
+    },
+    getAll: () => {
+      if (isExit()) {
+        return localConfig.config;
+      }
+      return null;
+    },
+    removeItem: (key) => {
+      const value = localConfig.getItem(key);
+      if (value) {
+        const config = Object.assign({}, localConfig.config);
+        delete config[key];
+        if (writeConfig(config)) {
+          localConfig.config = config;
+          return true;
+        }
+      }
+      return false;
+    },
+    clear: () => {
+      if (isExit()) {
+        if (writeConfig({})) {
+          localConfig.config = {};
+          return true;
+        }
+      }
+      return false;
     }
-    return false;
-  }
 }
 
 module.exports = localConfig;
