@@ -65,13 +65,10 @@ const localConfig = {
     configUrl: path.join(path.dirname(os.homedir()), 'localConfig.json'),
     setStoragePath: (filePath) => {
       let configFilePath = filePath;
-      if(!fs.existsSync(path.dirname(configFilePath))) {
-        fs.mkdirSync(path.dirname(configFilePath), {recursive:true});
+      if(!fs.existsSync(configFilePath)) {
+        fs.mkdirSync(configFilePath, {recursive:true});
       }
-      if (!fs.statSync(configFilePath).isFile()) {
-        configFilePath = path.join(configFilePath, 'localConfig.json');
-      }
-      localConfig.configUrl = configFilePath;
+      localConfig.configUrl = path.join(configFilePath, 'localConfig.json');
     },
     getStoragePath: () => {
       return localConfig.configUrl;

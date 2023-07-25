@@ -46,7 +46,8 @@ storage.getAll();
 ```
 自定义存储路径
 ```
-storage.setStoragePath(path.join(__dirname,'test.json'));
+文件存储路径不包括文件名
+storage.setStoragePath(path.join(__dirname));
 ```
 获取当前数据存储路径
 ```
